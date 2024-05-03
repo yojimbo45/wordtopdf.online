@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Conversion Tools</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.1/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="p-5 bg-white shadow-lg rounded-lg grid grid-cols-3 md:grid-cols-6 gap-4">
+        <!-- Each item in the grid -->
+        <a class="flex flex-col items-center justify-center p-2 text-center hover:bg-gray-100 rounded" href="/word-to-pdf">
+            <img src="https://via.placeholder.com/50" alt="Word to PDF">
+            <span>Word to PDF</span>
+        </a>
+        <a class="flex flex-col items-center justify-center p-2 text-center hover:bg-gray-100 rounded" href="/excel-to-pdf">
+            <img src="https://via.placeholder.com/50" alt="Excel to PDF">
+            <span>Excel to PDF</span>
+        </a>
+        <a class="flex flex-col items-center justify-center p-2 text-center hover:bg-gray-100 rounded" href="/ppt-to-pdf">
+            <img src="https://via.placeholder.com/50" alt="PowerPoint to PDF">
+            <span>PowerPoint to PDF</span>
+        </a>
+        <a class="flex flex-col items-center justify-center p-2 text-center hover:bg-gray-100 rounded" href="/jpg-to-pdf">
+            <img src="https://via.placeholder.com/50" alt="JPG to PDF">
+            <span>JPG to PDF</span>
+        </a>
+        <!-- Additional links follow the same pattern -->
+    </div>
+
+    <!-- Script for toggling visibility of additional tools -->
+    <script>
+        function toggleVisibility() {
+            document.querySelectorAll('.hidden').forEach(item => {
+                item.classList.toggle('hidden');
+            });
+        }
+    </script>
+</body>
+</html>

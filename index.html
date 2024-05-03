@@ -20,41 +20,54 @@
         <button onclick="document.getElementById('fileUploader').click()" class="w-full bg-red-500 text-white p-3 rounded hover:bg-red-600 transition-colors">
             Select WORD files
         </button>
-
-        <div class="flex justify-end space-x-4 mt-4">
-            <div class="bg-red-500 rounded-full" style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">
-                <img src="assets/dropbox.svg" alt="Dropbox" style="height: 18px; width: 18px;">
-            </div>
-            <div class="bg-red-500 rounded-full" style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">
-                <img src="assets/ggdrive.svg" alt="Google Drive" style="height: 18px; width: 18px;">
-            </div>
-        </div>
     </div>
 
     <script>
         async function uploadFile() {
             const fileInput = document.getElementById('fileUploader');
             const file = fileInput.files[0];
-            if (!file) return alert('Please select a file.');
+            if (!file) {
+                alert('Please select a file.');
+                return;
+            }
 
             const formData = new FormData();
             formData.append('file', file);
 
+            // Upload to Cloudflare R2
             try {
-                const response = await fetch('/api/upload', {
+                const uploadResponse = await fetch('/upload-to-r2', { // Adjust the endpoint as necessary
                     method: 'POST',
                     body: formData,
                 });
 
-                const result = await response.json();
-                if (response.ok) {
-                    window.location.href = `/download/${result.id}`;
-                } else {
-                    console.error('Upload failed:', result.message);
+                if (!uploadResponse.ok) {
+                    throw new Error(`HTTP error! status: ${uploadResponse.status}`);
                 }
+
+                const uploadResult = await uploadResponse.json();
+                const fileUrl = uploadResult.url; // Get the URL of the uploaded file
+
+                // Convert to PDF using Api2pdf
+                convertToPdf(fileUrl);
             } catch (error) {
-                console.error('Network error:', error);
+                console.error('Upload failed:', error);
+                alert('Upload failed. See console for more information.');
             }
+        }
+
+        function convertToPdf(fileUrl) {
+            const xhr = new XMLHttpRequest();
+            xhr.withCredentials = true;
+
+            xhr.addEventListener("readystatechange", function() {
+                if(this.readyState === 4) {
+                    console.log('PDF conversion response:', this.responseText);
+                }
+            });
+
+            xhr.open("GET", `https://v2.api2pdf.com/chrome/pdf/url?url=${encodeURIComponent(fileUrl)}&apikey=b9809c60-9eb2-470c-8690-b27f16b16caf`);
+            xhr.send();
         }
     </script>
 </body>
