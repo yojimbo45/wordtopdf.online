@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale-1.0">
+    <title>Word to PDF Converter</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.1/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-faf6f6 min-h-screen flex flex-col items-center">
+    <header class="w-full bg-white py-3 text-center shadow-md" style="height: 70px; line-height: 70px;">
+        <h1 class="text-3xl font-bold text-gray-800">Convert WORD to PDF</h1>
+    </header>
+    <div class="mt-5 w-full max-w-md px-10">
+        <p class="text-gray-600 text-lg mb-6">Your PDF has been converted to an editable WORD document</p>
+        <button id="uploadButton" class="w-full bg-red-500 text-white p-3 rounded hover:bg-red-600 transition-colors">
+            Download Word
+        </button>
+        <div class="flex justify-end space-x-4 mt-4">
+            <div class="bg-red-500 rounded-full" style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">
+                <img src="assets/dropbox.svg" alt="Dropbox" style="height: 18px; width: 18px;">
+            </div>
+            <div class="bg-red-500 rounded-full" style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">
+                <img src="assets/ggdrive.svg" alt="Google Drive" style="height: 18px; width: 18px;">
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('uploadButton').addEventListener('click', function() {
+            var uniqueId = new Date().getTime(); // Simple unique ID using timestamp
+            window.location.href = '/upload/' + uniqueId;
+        });
+    </script>
+</body>
+</html>
