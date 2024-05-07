@@ -115,7 +115,7 @@
          </ul>
       </footer>
       <script>
-        async function uploadFile() {
+         async function uploadFile() {
     const fileInput = document.getElementById('fileUploader');
     const file = fileInput.files[0];
     if (!file) {
@@ -126,8 +126,9 @@
     const formData = new FormData();
     formData.append('file', file);
 
+    // Upload to Cloudflare R2
     try {
-        const uploadResponse = await fetch('https://files.wordtopdf.online/upload-to-r2', {
+        const uploadResponse = await fetch('/upload-to-r2', { // Adjust the endpoint as necessary
             method: 'POST',
             body: formData,
         });
@@ -137,31 +138,17 @@
         }
 
         const uploadResult = await uploadResponse.json();
-        if (uploadResult.error) {
-            throw new Error(`Server error: ${uploadResult.error}`);
+        if (uploadResult.url) {
+            alert('File uploaded successfully! File URL: ' + uploadResult.url);
+        } else {
+            alert('File uploaded but no URL returned.');
         }
-
-        const fileUrl = uploadResult.url; // URL from your custom domain
-        convertToPdf(fileUrl);
     } catch (error) {
         console.error('Upload failed:', error);
-        alert(`Upload failed: ${error.message}`);
+        alert('Upload failed. See console for more information.');
     }
 }
 
-         function convertToPdf(fileUrl) {
-             const xhr = new XMLHttpRequest();
-             xhr.withCredentials = true;
-         
-             xhr.addEventListener("readystatechange", function() {
-                 if(this.readyState === 4) {
-                     console.log('PDF conversion response:', this.responseText);
-                 }
-             });
-         
-             xhr.open("GET", `https://v2.api2pdf.com/chrome/pdf/url?url=${encodeURIComponent(fileUrl)}&apikey=b9809c60-9eb2-470c-8690-b27f16b16caf`);
-             xhr.send();
-         }
       </script>
    </body>
 </html>
