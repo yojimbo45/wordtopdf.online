@@ -1,154 +1,270 @@
 <!DOCTYPE html>
 <html lang="en">
-   <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Word to PDF Converter</title>
-      <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.1/dist/tailwind.min.css" rel="stylesheet">
-          <link rel="icon" href="assets/favicon.svg" type="image/png">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta name="Cross-Origin-Opener-Policy" content="same-origin-allow-popups">
 
-	  <style>
-         nav li:hover > ul {
-         display: block;
-         }
-         nav ul li a {
-         display: block;
-         clear: both;
-         }
-         nav ul ul {
-         position: absolute;
-         left: 0;
-         top: 100%;
-         min-width: 200px;
-         z-index: 1000;
-         }
-         footer {
-         background-color: #f5f5fa;
-         color: #1a202c; /* close to Tailwind's gray-900 */
-         }
-         footer a {
-         color: inherit; /* Ensures links use the same text color as the footer text */
-         }
-         footer a:hover {
-         color: #4a5568; /* close to Tailwind's gray-700 */
-         }
-      </style>
-   </head>
-   <body class="bg-faf6f6 min-h-screen flex flex-col items-center">
-      <header class="w-full bg-white py-3 shadow-md flex items-center justify-between" style="height: 70px;">
-         <div class="flex items-center">
-            <!-- Hyperlinked Logo and text -->
-            <a href="/" class="flex items-center">
-            <img src="assets/favicon.svg" alt="Logo" style="height: 30px;">
-            <span class="text-xl font-bold text-gray-800 ml-2">WordToPDF</span>
-            </a>
-         </div>
-         <!-- Navigation -->
-         <nav>
-            <ul class="flex space-x-4 mr-4">
-               <li><a href="merge-pdf" class="nav-link text-gray-800 hover:text-red-500">MERGE PDF</a></li>
-               <li><a href="split-pdf" class="nav-link text-gray-800 hover:text-red-500">SPLIT PDF</a></li>
-               <li><a href="compress-pdf" class="nav-link text-gray-800 hover:text-red-500">COMPRESS PDF</a></li>
-               <li class="relative">
-                  <a href="#" class="nav-link text-gray-800 hover:text-red-500 flex items-center">
-                     CONVERT PDF 
-                     <svg class="fill-current text-gray-800 ml-1 w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                        <path d="M5.95 6.95l4 4 4-4 .9.9-4.9 4.9-4.9-4.9.9-.9z"/>
-                     </svg>
-                  </a>
-                  <ul class="dropdown-menu absolute hidden bg-white shadow-lg mt-1">
-                     <li class="px-4 py-2 text-gray-500 text-sm">CONVERT TO PDF</li>
-                     <li><a href="jpg-to-pdf" class="block px-4 py-2 text-gray-800 hover:text-red-500">JPG to PDF</a></li>
-                     <li><a href="word-to-pdf" class="block px-4 py-2 text-gray-800 hover:text-red-500">WORD to PDF</a></li>
-                     <li><a href="powerpoint-to-pdf" class="block px-4 py-2 text-gray-800 hover:text-red-500">POWERPOINT to PDF</a></li>
-                     <li><a href="excel-to-pdf" class="block px-4 py-2 text-gray-800 hover:text-red-500">EXCEL to PDF</a></li>
-                     <li><a href="html-to-pdf" class="block px-4 py-2 text-gray-800 hover:text-red-500">HTML to PDF</a></li>
-                     <li class="px-4 py-2 text-gray-500 text-sm">CONVERT FROM PDF</li>
-                     <li><a href="pdf-to-jpg" class="block px-4 py-2 text-gray-800 hover:text-red-500">PDF to JPG</a></li>
-                     <li><a href="pdf-to-word" class="block px-4 py-2 text-gray-800 hover:text-red-500">PDF to WORD</a></li>
-                     <li><a href="pdf-to-powerpoint" class="block px-4 py-2 text-gray-800 hover:text-red-500">PDF to POWERPOINT</a></li>
-                     <li><a href="pdf-to-excel" class="block px-4 py-2 text-gray-800 hover:text-red-500">PDF to EXCEL</a></li>
-                     <li><a href="pdf-to-pdfa" class="block px-4 py-2 text-gray-800 hover:text-red-500">PDF to PDF/A</a></li>
-                  </ul>
-               </li>
-            </ul>
-         </nav>
-      </header>
-      <div class="mt-5 w-full max-w-md px-10">
-         <!-- Added h1 title -->
+    <title>Word to PDF Converter</title>
+
+    <script type="text/javascript" src="https://www.dropbox.com/static/api/2/dropins.js" id="dropboxjs" data-app-key="<your dropbox app-key>"></script> 
+
+    <script src="https://cdn.jsdelivr.net/npm/promise-polyfill@7/dist/polyfill.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fetch/2.0.3/fetch.js"></script>
+    
+
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.1/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="icon" href="assets/favicon.svg" type="image/png">
+
+    <style>
+        nav li:hover > ul {
+        display: block;
+        }
+        nav ul li a {
+        display: block;
+        clear: both;
+        }
+        nav ul ul {
+        position: absolute;
+        left: 0;
+        top: 100%;
+        min-width: 200px;
+        z-index: 1000;
+        }
+        footer {
+        background-color: #f5f5fa;
+        color: #1a202c; /* close to Tailwind's gray-900 */
+        }
+        footer a {
+        color: inherit; /* Ensures links use the same text color as the footer text */
+        }
+        footer a:hover {
+        color: #4a5568; /* close to Tailwind's gray-700 */
+        }
+    </style>
+</head>
+<body class="bg-faf6f6 min-h-screen flex flex-col items-center">
+    <header class="w-full bg-white py-3 shadow-md flex items-center justify-between" style="height: 70px;">
+        <div class="flex items-center">
+        <!-- Hyperlinked Logo and text -->
+        <a href="/" class="flex items-center">
+        <img src="assets/favicon.svg" alt="Logo" style="height: 30px;">
+        <span class="text-xl font-bold text-gray-800 ml-2">WordToPDF</span>
+        </a>
+        </div>
+        <!-- Navigation -->
+        <nav>
+        <ul class="flex space-x-4 mr-4">
+            <li><a href="merge-pdf" class="nav-link text-gray-800 hover:text-red-500">MERGE PDF</a></li>
+            <li><a href="split-pdf" class="nav-link text-gray-800 hover:text-red-500">SPLIT PDF</a></li>
+            <li><a href="compress-pdf" class="nav-link text-gray-800 hover:text-red-500">COMPRESS PDF</a></li>
+            <li class="relative">
+                <a href="#" class="nav-link text-gray-800 hover:text-red-500 flex items-center">
+                    CONVERT PDF 
+                    <svg class="fill-current text-gray-800 ml-1 w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                    <path d="M5.95 6.95l4 4 4-4 .9.9-4.9 4.9-4.9-4.9.9-.9z"/>
+                    </svg>
+                </a>
+                <ul class="dropdown-menu absolute hidden bg-white shadow-lg mt-1">
+                    <li class="px-4 py-2 text-gray-500 text-sm">CONVERT TO PDF</li>
+                    <li><a href="jpg-to-pdf" class="block px-4 py-2 text-gray-800 hover:text-red-500">JPG to PDF</a></li>
+                    <li><a href="word-to-pdf" class="block px-4 py-2 text-gray-800 hover:text-red-500">WORD to PDF</a></li>
+                    <li><a href="powerpoint-to-pdf" class="block px-4 py-2 text-gray-800 hover:text-red-500">POWERPOINT to PDF</a></li>
+                    <li><a href="excel-to-pdf" class="block px-4 py-2 text-gray-800 hover:text-red-500">EXCEL to PDF</a></li>
+                    <li><a href="html-to-pdf" class="block px-4 py-2 text-gray-800 hover:text-red-500">HTML to PDF</a></li>
+                    <li class="px-4 py-2 text-gray-500 text-sm">CONVERT FROM PDF</li>
+                    <li><a href="pdf-to-jpg" class="block px-4 py-2 text-gray-800 hover:text-red-500">PDF to JPG</a></li>
+                    <li><a href="pdf-to-word" class="block px-4 py-2 text-gray-800 hover:text-red-500">PDF to WORD</a></li>
+                    <li><a href="pdf-to-powerpoint" class="block px-4 py-2 text-gray-800 hover:text-red-500">PDF to POWERPOINT</a></li>
+                    <li><a href="pdf-to-excel" class="block px-4 py-2 text-gray-800 hover:text-red-500">PDF to EXCEL</a></li>
+                    <li><a href="pdf-to-pdfa" class="block px-4 py-2 text-gray-800 hover:text-red-500">PDF to PDF/A</a></li>
+                </ul>
+            </li>
+        </ul>
+        </nav>
+    </header>
+    <div class="mt-5 w-full max-w-md px-10">
+        <!-- Added h1 title -->
 <div class="text-center">
-    <h1 class="text-gray-900 font-bold mb-4" style="font-size: 41px;">Word to PDF</h1>
-    <p class="text-gray-600 text-lg mb-6">
-        Make DOC and DOCX files easy to read by converting them to PDF.
-    </p>
-    <div class="flex justify-center items-start">
-        <!-- Button triggers file input -->
-        <button onclick="document.getElementById('fileUploader').click()"
-                class="bg-red-500 text-white p-3 rounded-lg hover:bg-red-600 transition-colors"
-                style="min-height: 80px; font-weight: bold; font-size: 24px; width: 100%;">
-            Select WORD files
-        </button>
-        <!-- Icon container -->
-        <div class="flex flex-col ml-4">
-            <div class="bg-red-500 rounded-full mb-2" style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">
-                <img src="assets/dropbox.svg" alt="Dropbox" style="height: 18px; width: 18px;">
-            </div>
-            <div class="bg-red-500 rounded-full" style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">
-                <img src="assets/ggdrive.svg" alt="Google Drive" style="height: 18px; width: 18px;">
-            </div>
+<h1 class="text-gray-900 font-bold mb-4" style="font-size: 41px;">Word to PDF</h1>
+<p class="text-gray-600 text-lg mb-6">
+    Make DOC and DOCX files easy to read by converting them to PDF.
+</p>
+<div class="flex justify-center items-start">
+    <!-- Button triggers file input -->
+    <button onclick="document.getElementById('fileUploader').click()"
+            class="bg-red-500 text-white p-3 rounded-lg hover:bg-red-600 transition-colors"
+            style="min-height: 80px; font-weight: bold; font-size: 24px; width: 100%;">
+        Select WORD files
+    </button>
+    <!-- Icon container -->
+    <div class="flex flex-col ml-4">
+        <div class="bg-red-500 rounded-full mb-2" style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;" onclick="handleDropBoxClick()">
+            <img id="dropbox-chooser" src="assets/dropbox.svg" alt="Dropbox" style="height: 18px; width: 18px;" >
+        </div>
+        <div class="bg-red-500 rounded-full" style="width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;" onclick="handleGGDriveClick()">
+            <img id="google-drive-chooser" src="assets/ggdrive.svg" alt="Google Drive" style="height: 18px; width: 18px;" >
         </div>
     </div>
-    <!-- Hidden file input -->
-    <input type="file" id="fileUploader" style="display: none;" onchange="uploadFile()" />
+</div>
+<!-- Hidden file input -->
+<input type="file" id="fileUploader" style="display: none;" onchange="uploadFile()" />
 </div>
 
+    </div>
+    <!-- Footer -->
+    <footer class="w-full bg-[#f5f5fa] text-gray-900 py-4 text-center mt-auto">
+        <ul class="flex justify-center space-x-4">
+        <li><a href="/privacy">Privacy</a></li>
+        <li><a href="/terms-of-use">Terms of Use</a></li>
+        <li><a href="/contact-us">Contact Us</a></li>
+        </ul>
+    </footer>
+    <script>
 
+        async function uploadFile() {
+            const fileInput = document.getElementById('fileUploader');
+            const file = fileInput.files[0];
+            if (!file) {
+                alert('Please select a file.');
+                return;
+            }
 
+            const formData = new FormData();
+            formData.append('file', file);
 
-      </div>
-      <!-- Footer -->
-      <footer class="w-full bg-[#f5f5fa] text-gray-900 py-4 text-center mt-auto">
-         <ul class="flex justify-center space-x-4">
-            <li><a href="/privacy">Privacy</a></li>
-            <li><a href="/terms-of-use">Terms of Use</a></li>
-            <li><a href="/contact-us">Contact Us</a></li>
-         </ul>
-      </footer>
-      <script>
-         async function uploadFile() {
-    const fileInput = document.getElementById('fileUploader');
-    const file = fileInput.files[0];
-    if (!file) {
-        alert('Please select a file.');
-        return;
-    }
+            // Upload to Cloudflare R2
+            try {
+                const uploadResponse = await fetch('/upload-to-r2', { 
+                    method: 'POST',
+                    body: formData,
+                });
 
-    const formData = new FormData();
-    formData.append('file', file);
+                if (!uploadResponse.ok) {
+                    throw new Error(`HTTP error! status: ${uploadResponse.status}`);
+                }
 
-    // Upload to Cloudflare R2
-    try {
-        const uploadResponse = await fetch('/upload-to-r2', { // Adjust the endpoint as necessary
-            method: 'POST',
-            body: formData,
-        });
-
-        if (!uploadResponse.ok) {
-            throw new Error(`HTTP error! status: ${uploadResponse.status}`);
+                const uploadResult = await uploadResponse.json();
+                if (uploadResult.url) {
+                    alert('File uploaded successfully! File URL: ' + uploadResult.url);
+                } else {
+                    alert('File uploaded but no URL returned.');
+                }
+            } catch (error) {
+                console.error('Upload failed:', error);
+                alert('Upload failed. See console for more information.');
+            }
         }
 
-        const uploadResult = await uploadResponse.json();
-        if (uploadResult.url) {
-            alert('File uploaded successfully! File URL: ' + uploadResult.url);
-        } else {
-            alert('File uploaded but no URL returned.');
-        }
-    } catch (error) {
-        console.error('Upload failed:', error);
-        alert('Upload failed. See console for more information.');
-    }
-}
 
-      </script>
-   </body>
+        //google drive
+        const CLIENT_ID = '<your google drive CLIENT_ID>';
+        const API_KEY = '<your google drive API_KEY>';
+        const DISCOVERY_DOC = 'https://www.googleapis.com/discovery/v1/apis/drive/v3/rest';        
+        const SCOPES = 'https://www.googleapis.com/auth/drive.metadata.readonly';                     
+
+        let tokenClient;
+        let gapiInited = false;
+        let gisInited = false;
+
+        function gapiLoaded() {
+            gapi.load('client', initializeGapiClient);
+        }
+
+        async function initializeGapiClient() {
+            try {
+                await gapi.client.init({
+                    apiKey: API_KEY,
+                    discoveryDocs: [DISCOVERY_DOC],
+                });
+                gapiInited = true;
+            } catch (error) {
+                console.error('Error initializing Google API client:', error);
+            }
+        }
+
+        function gisLoaded() {
+            log('Google Identity Services loaded');
+            tokenClient = google.accounts.oauth2.initTokenClient({
+                client_id: CLIENT_ID,
+                scope: SCOPES,
+                callback: '', 
+            });
+            gisInited = true;
+        }
+
+        function handleGGDriveClick() {
+            log('Handling authentication click');
+            tokenClient.callback = async (resp) => {
+                if (resp.error !== undefined) {
+                    throw (resp);
+                }
+                await listFiles();
+            };
+
+            if (gapi.client.getToken() === null) {
+                tokenClient.requestAccessToken({prompt: 'consent'});
+            } else {
+                tokenClient.requestAccessToken({prompt: ''});
+            }
+        }
+
+        function handleSignoutClick() {
+            const token = gapi.client.getToken();
+            if (token !== null) {
+                google.accounts.oauth2.revoke(token.access_token);
+                gapi.client.setToken('');
+            }
+        }
+
+        async function listFiles() {
+            let response;
+            try {
+                response = await gapi.client.drive.files.list({
+                    'pageSize': 10,
+                    'fields': 'files(id, name)',
+                });
+            } catch (err) {
+                log('Error listing files');
+                document.getElementById('content').innerText = err.message;
+                return;
+            }
+            const files = response.result.files;
+            if (!files || files.length == 0) {
+                document.getElementById('content').innerText = 'No files found.';
+                return;
+            }
+            const output = files.reduce(
+                (str, file) => `${str}${file.name} (${file.id})\n`,
+                'Files:\n');
+                log(output);
+        }
+
+        function log(message) {  
+            console.log(message);
+        }
+
+
+        //dropbox
+        options = {
+            success: function(files) {
+                alert("Here's the file link: " + files[0].link)
+            },
+            cancel: function() {
+            },
+            linkType: "preview",
+            multiselect: false,
+            extensions: ['.doc', '.docx'],
+            folderselect: false, 
+        };
+
+        function handleDropBoxClick() {
+            Dropbox.choose(options);
+        }
+    </script>
+    <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
+    <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
+    
+</body>
 </html>
