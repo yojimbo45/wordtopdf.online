@@ -7,6 +7,8 @@
       <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.0.1/dist/tailwind.min.css" rel="stylesheet">
           <link rel="icon" href="assets/favicon.svg" type="image/png">
 
+        
+
 	  <style>
          nav li:hover > ul {
          display: block;
@@ -98,6 +100,28 @@
             </div>
         </div>
     </div>
+    <table class="mt-8 w-full">
+        <thead>
+            <tr>
+                <th>File Name</th>
+                <th>Size</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="fileList">
+            <!-- Здесь будут отображаться загруженные файлы -->
+        </tbody>
+    </table>
+
+    <!-- Кнопки "Загрузить еще файлы" и "Конвертировать" -->
+    <div class="flex justify-between mt-4">
+        <button onclick="document.getElementById('fileUploader').click()"
+            class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">Upload More Files</button>
+        <button onclick="convertFiles()"
+            class="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600">Convert</button>
+    </div>
+    </div>
     <!-- Hidden file input -->
     <input type="file" id="fileUploader" style="display: none;" onchange="uploadFile()" />
 </div>
@@ -114,7 +138,8 @@
             <li><a href="/contact-us">Contact Us</a></li>
          </ul>
       </footer>
-      <script>
+      <script >
+
          async function uploadFile() {
     const fileInput = document.getElementById('fileUploader');
     const file = fileInput.files[0];
@@ -128,21 +153,29 @@
 
     // Upload to Cloudflare R2
     try {
-        const uploadResponse = await fetch('/upload-to-r2', { // Adjust the endpoint as necessary
-            method: 'POST',
-            body: formData,
-        });
+        // const uploadResponse = await fetch('/upload-to-r2', { // Adjust the endpoint as necessary
+        //     method: 'POST',
+        //     body: formData,
+        // });
 
-        if (!uploadResponse.ok) {
-            throw new Error(`HTTP error! status: ${uploadResponse.status}`);
-        }
+        // if (!uploadResponse.ok) {
+        //     throw new Error(`HTTP error! status: ${uploadResponse.status}`);
+        // }
 
-        const uploadResult = await uploadResponse.json();
-        if (uploadResult.url) {
-            alert('File uploaded successfully! File URL: ' + uploadResult.url);
-        } else {
-            alert('File uploaded but no URL returned.');
-        }
+        // const uploadResult = await uploadResponse.json();
+        // if (uploadResult.url) {
+        //     alert('File uploaded successfully! File URL: ' + uploadResult.url);
+        // } else {
+        //     alert('File uploaded but no URL returned.');
+        // }
+
+        const s3Url = await uploadFileToS3(formData)
+            .then(convertToPdf)
+            .catch(error => {
+                // Обробка помилок
+                console.error(error);
+            });
+        alert('File uploaded successfully! S3 URL: ' + s3Url);
     } catch (error) {
         console.error('Upload failed:', error);
         alert('Upload failed. See console for more information.');
@@ -150,5 +183,6 @@
 }
 
       </script>
+      <script src="converter.js"></script>
    </body>
 </html>
