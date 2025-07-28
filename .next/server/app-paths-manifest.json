@@ -1,6 +1,0 @@
-{
-  "/(site)/page": "app/(site)/page.js",
-  "/(site)/merge-pdf/page": "app/(site)/merge-pdf/page.js",
-  "/[lang]/page": "app/[lang]/page.js",
-  "/(site)/compress-pdf/page": "app/(site)/compress-pdf/page.js"
-}
