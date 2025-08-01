@@ -1,26 +1,26 @@
-'use client'
+'use client';
 
-import { useSearchParams, useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/button'
-import { Download, CheckCircle } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { useSearchParams, useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { Download, CheckCircle } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 export default function Success() {
-    const params = useSearchParams()
-    const router = useRouter()
-    const id = params.get('id') ?? ''
-    const [url, setUrl] = useState<string | null>(null)
+    const params = useSearchParams();
+    const router = useRouter();
+    const id = params.get('id') ?? '';
+    const [url, setUrl] = useState<string | null>(null);
 
     useEffect(() => {
-        const blobUrl = sessionStorage.getItem(id)
-        setUrl(blobUrl)
+        const blobUrl = sessionStorage.getItem(id);
+        setUrl(blobUrl);
         return () => {
-            if (blobUrl) URL.revokeObjectURL(blobUrl)
-            sessionStorage.removeItem(id)
-        }
-    }, [id])
+            if (blobUrl) URL.revokeObjectURL(blobUrl);
+            sessionStorage.removeItem(id);
+        };
+    }, [id]);
 
-    if (!url) return null
+    if (!url) return null;
 
     return (
         <section className="min-h-screen flex flex-col items-center justify-center">
@@ -35,9 +35,13 @@ export default function Success() {
                 </Button>
             </a>
 
-            <Button variant="link" className="mt-8" onClick={() => router.push('/merge-pdf')}>
+            <Button
+                variant="link"
+                className="mt-8"
+                onClick={() => router.push('/merge-pdf')}
+            >
                 Merge another file
             </Button>
         </section>
-    )
+    );
 }
