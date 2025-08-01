@@ -4,7 +4,7 @@ import type { SortOption } from '@/components/SortDropdown';
 /* -------------------------------------------------------- *
  * Types
  * -------------------------------------------------------- */
-export type MergeStatus = 'idle' | 'uploading' | 'merging' | 'done' | 'error';
+export type SplitStatus = 'idle' | 'uploading' | 'splitting' | 'done' | 'error';
 
 export interface UploadedFile {
     id: string;
@@ -96,4 +96,24 @@ export async function mergePdfs(files: File[]): Promise<string> {
 
     const bytes = await merged.save();
     return URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
+}
+
+/** Split PDFs into individual pages and return an array of blob URLs */
+export async function splitPdfPages(files: File[]): Promise<string[]> {
+    const urls: string[] = [];
+
+    for (const file of files) {
+        const srcPdf = await PDFDocument.load(await file.arrayBuffer());
+
+        for (let i = 0; i < srcPdf.getPageCount(); i++) {
+            const newPdf = await PDFDocument.create();
+            const [copiedPage] = await newPdf.copyPages(srcPdf, [i]);
+            newPdf.addPage(copiedPage);
+            const bytes = await newPdf.save();
+            const blobUrl = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
+            urls.push(blobUrl);
+        }
+    }
+
+    return urls;
 }

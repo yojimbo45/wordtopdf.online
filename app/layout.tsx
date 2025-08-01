@@ -16,11 +16,16 @@ export default async function RootLayout({ children }: LayoutProps) {
 
     return (
         <html lang="en">
-        <body className="min-h-screen font-sans antialiased bg-gradient-to-br from-red-50 to-orange-50 flex flex-col">
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
-        <div className="fixed bottom-4 right-4">
+        <body className="relative z-0 min-h-screen font-sans antialiased bg-gradient-to-br from-red-50 to-orange-50 flex flex-col">
+        {/* Global Z-index container */}
+        <div className="relative z-0">
+            <Header />
+            <main className="flex-1 z-0 relative">{children}</main>
+            <Footer />
+        </div>
+
+        {/* Locale Switcher should also appear above everything */}
+        <div className="fixed bottom-4 right-4 z-50">
             <LocaleSwitcher locales={availableLocales} />
         </div>
         </body>

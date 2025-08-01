@@ -2,13 +2,8 @@
 
 import React from 'react';
 import { Download, Loader2 } from 'lucide-react';
-import type { UploadedFile } from '@/lib/pdf-utils';
-
 import { useMerge } from './MergeProvider';
-import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
-
-/* -------------------------------------------------------- */
 
 export default function MergeSidebar() {
     const { state, merge } = useMerge();
@@ -22,17 +17,16 @@ export default function MergeSidebar() {
                 <div className="bg-blue-50 border border-blue-200 p-4 rounded-lg text-sm">
                     <p className="font-medium mb-1 text-black">Tip</p>
                     <p className="text-black">
-                        Drag thumbnails to change page order, or use “Add Files” to append
-                        more PDFs.
+                        Drag thumbnails to change page order, or use “Add Files” to append more PDFs.
                     </p>
                 </div>
             </div>
 
             <div className="p-4 shadow-[0_-2px_8px_rgba(0,0,0,0.06)]">
-                <Button
+                <button
                     disabled={state.items.length < 2 || state.status === 'merging'}
                     onClick={merge}
-                    className="w-full h-[90px] text-2xl font-extrabold rounded-2xl bg-red-500 hover:bg-red-600 flex items-center justify-center"
+                    className="w-full h-[90px] text-2xl font-bold font-sans rounded-2xl bg-red-500 hover:bg-red-600 flex items-center justify-center text-white disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     {state.status === 'merging' ? (
                         <>
@@ -45,7 +39,7 @@ export default function MergeSidebar() {
                             <Download className="w-6 h-6 ml-3" />
                         </>
                     )}
-                </Button>
+                </button>
 
                 {state.status === 'merging' && (
                     <div className="mt-3">
@@ -54,7 +48,6 @@ export default function MergeSidebar() {
                 )}
             </div>
 
-            {/* fade‑in animation */}
             <style jsx>{`
                 @keyframes fadeIn {
                     from {

@@ -98,7 +98,7 @@ export default function UploadPanel() {
                     <CardContent className="p-6 text-center">
                         <div className="mt-6 border-2 border-dashed border-red-300 bg-white rounded-lg pt-12 pb-8 px-8 relative">
                             <h3 className="text-xl font-semibold text-gray-900 mb-2">
-                                Drop or select PDF files to merge
+                                Drop or select PDF files
                             </h3>
                             <p className="text-gray-600 mb-4">Only PDF files are accepted</p>
 
@@ -134,10 +134,11 @@ export default function UploadPanel() {
             {state.items.length > 0 && (
                 <>
                     {/* ✅ Centered toolbar */}
-                    <div className="fade-in mb-4 flex flex-wrap justify-center gap-3">
+                    <div className="fade-in mb-4 flex flex-wrap justify-center gap-3 relative z-50">
                         <AddFilesDropdown onAddFilesAction={handleFiles} />
                         <SortDropdown onChangeAction={handleSort} />
                     </div>
+
 
                     {/* Thumbnails + DnD */}
                     <DragDropContext onDragEnd={onDragEnd}>

@@ -11,7 +11,7 @@ function SplitPDFContent() {
 
     return (
         <main className="flex min-h-screen bg-white">
-            {/* LEFT PANEL */}
+            {/* LEFT MAIN PANEL */}
             <div className="flex-1 p-8">
                 {state.status !== 'done' && (
                     <div className="text-center mb-8">
