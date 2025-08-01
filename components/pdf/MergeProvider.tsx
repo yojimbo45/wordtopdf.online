@@ -1,7 +1,11 @@
 'use client';
+
 import React, { createContext, useContext, useReducer } from 'react';
-import { mergePdfs } from '@/lib/pdf-utils';  // heavy code kept outside components
-import type { UploadedFile, MergeStatus } from '@/lib/pdf-utils';
+import { mergePdfs } from '@/lib/pdf-utils';
+import type { UploadedFile } from '@/lib/pdf-utils'; // ✅ Correct import
+
+// ✅ Define MergeStatus locally
+export type MergeStatus = 'idle' | 'uploading' | 'merging' | 'done' | 'error';
 
 type State = {
     items: UploadedFile[];
@@ -48,20 +52,25 @@ function useMergeCore() {
         mergedUrl: null,
     });
 
-    // Async side‑effect kept here so UI components remain dumb
     async function merge() {
         dispatch({ type: 'SET_STATUS', status: 'merging' });
+
         let p = 0;
         const timer = setInterval(() => {
             p = Math.min(95, p + 5);
             dispatch({ type: 'SET_PROGRESS', value: p });
         }, 120);
 
-        const url = await mergePdfs(state.items.map(i => i.file));
-        clearInterval(timer);
-        dispatch({ type: 'SET_MERGED_URL', url });
-        dispatch({ type: 'SET_PROGRESS', value: 100 });
-        dispatch({ type: 'SET_STATUS', status: 'done' });
+        try {
+            const url = await mergePdfs(state.items.map(i => i.file));
+            clearInterval(timer);
+            dispatch({ type: 'SET_MERGED_URL', url });
+            dispatch({ type: 'SET_PROGRESS', value: 100 });
+            dispatch({ type: 'SET_STATUS', status: 'done' });
+        } catch (err) {
+            clearInterval(timer);
+            dispatch({ type: 'SET_STATUS', status: 'error' });
+        }
     }
 
     return { state, dispatch, merge };
@@ -70,6 +79,7 @@ function useMergeCore() {
 export const MergeProvider = ({ children }: { children: React.ReactNode }) => (
     <MergeContext.Provider value={useMergeCore()}>{children}</MergeContext.Provider>
 );
+
 export const useMerge = () => {
     const ctx = useContext(MergeContext);
     if (!ctx) throw new Error('useMerge must be used inside MergeProvider');

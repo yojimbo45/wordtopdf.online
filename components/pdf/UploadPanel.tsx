@@ -20,8 +20,11 @@ import { useMerge } from './MergeProvider';
 import {
     loadPdfThumbnail,
     sortItems,
-    MergeStatus,
 } from '@/lib/pdf-utils';
+
+// ✅ Define MergeStatus locally
+type MergeStatus = 'idle' | 'uploading' | 'merging' | 'done' | 'error';
+
 
 /* -------------------------------------------------------- */
 
